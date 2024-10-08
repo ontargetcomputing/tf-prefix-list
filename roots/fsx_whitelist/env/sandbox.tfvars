@@ -1,10 +1,9 @@
 env ="sandbox"
 AWS_REGION ="us-west-2"
 
-
 cidr_blocks = {
-  "192.168.1.0/32" = "First CIDR block"
-  "10.0.1.0/32"    = "Second CIDR block"
+  "10.142.0.0/19"    = "Prisma VPN"
+  "10.224.0.0/16"    = "EEC"
 }
 
 principle_ou_arn_suffixes = [
