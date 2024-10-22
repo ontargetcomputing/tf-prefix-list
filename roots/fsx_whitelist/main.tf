@@ -1,5 +1,5 @@
 locals {
-  context = "fsx-whitelist-test-1"
+  context = "fsx-whitelist"
 }
 
 module "fsx_whitelist_prefix_list" {
