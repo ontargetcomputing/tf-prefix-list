@@ -10,9 +10,3 @@ terraform_apply: get_root_account_id
 terraform_destroy: get_root_account_id
 	echo "Running terraform apply with the root account ID..."
 	TF_VAR_management_account_id=$(ROOT_ACCOUNT_ID) terraform destroy -var-file=${VAR_FILE}
-
-
-sharing_bootstrap:
-	echo "The following commands must be run on the management account."
-  aws organizations enable-aws-service-access --service-principal ram.amazonaws.com
-	aws ram enable-sharing-with-aws-organization
