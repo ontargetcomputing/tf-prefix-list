@@ -28,13 +28,30 @@ jobs:
           terraform_version: 1.9.8
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN }}
 
-      # - name: Get Repository URL
-      #   run: |
-      #     echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"        
-
       - name: Terraform Init
         working-directory: roots/fsx_whitelist
         run: terraform init
+
+      - name: Get AWS Root Org ID
+        id: get_org_id
+        run: |
+          ORG_ID=$(aws organizations describe-organization --query 'Organization.Id' --output text)
+          echo "Organization ID: $ORG_ID"
+          echo "ORG_ID=$ORG_ID" >> $GITHUB_ENV
+
+      - name: Setup the value for our SourceControl tag
+        id: setup_source_control_tag
+        run: |
+          SOURCE_CONTROL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
+          echo "Source Control Value: $SOURCE_CONTROL"
+          echo "SOURCE_CONTROL=$SOURCE_CONTROL" >> $GITHUB_ENV
+
+      - name: Terraform Plan
+        run: |
+          TF_VAR_management_account_id=$ORG_ID TF_VAR_SourceControl=$SOURCE_CONTROL terraform plan -var-file=./env/5017.tfvars
+        env:
+          ORG_ID: ${{ env.ORG_ID }}
+          SOURCE_CONTROL: ${{ env.SOURCE_CONTROL }}
 
       - name: Terraform Plan
         working-directory: roots/fsx_whitelist
@@ -48,12 +65,7 @@ jobs:
 
 
 
-      # - name: Get AWS Root Org ID
-      #   id: get_org_id
-      #   run: |
-      #     ORG_ID=$(aws organizations describe-organization --query 'Organization.Id' --output text)
-      #     echo "Organization ID: $ORG_ID"
-      #     echo "ORG_ID=$ORG_ID" >> $GITHUB_ENV
+
 
       # - name: Use the Organization ID
       #   run: |
