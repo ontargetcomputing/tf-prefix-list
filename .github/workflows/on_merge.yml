@@ -26,16 +26,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.8
+          cli_config_credentials_token: ${{ secrets.TFC_TOKEN }}
 
       # - name: Get Repository URL
       #   run: |
       #     echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"        
-
-      - name: Log in to Terraform Cloud
-        env:
-          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-        run: |
-          terraform login -t $TFC_TOKEN
 
       - name: Terraform Init
         working-directory: roots/fsx_whitelist
