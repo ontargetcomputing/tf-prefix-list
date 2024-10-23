@@ -16,24 +16,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get Repository URL
+      - name: Configure AWS Credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::582983609964:role/github-actions-oidc-role
+          aws-region: us-west-2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      # - name: Get Repository URL
+      #   run: |
+      #     echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"        
+
+      - name: Log in to Terraform Cloud
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
         run: |
-          echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}@${GITHUB_SHA}"        
+          terraform login -t $TFC_TOKEN
 
-      # - name: Configure AWS Credentials using OIDC
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     role-to-assume: arn:aws:iam::582983609964:role/github-actions-oidc-role
-      #     aws-region: us-west-2
-
-      # - name: Set up Terraform
-      #   uses: hashicorp/setup-terraform@v3
-      #   with:
-      #     terraform_version: 1.9.8
-
-      # - name: Terraform Init
-      #   working-directory: roots/fsx_whitelist
-      #   run: terraform init
+      - name: Terraform Init
+        working-directory: roots/fsx_whitelist
+        run: terraform init
 
       # - name: Terraform Plan
       #   working-directory: roots/fsx_whitelist
@@ -42,3 +48,20 @@ jobs:
       # # - name: Terraform Apply
       # #   if: github.event_name == 'push'
       # #   run: terraform apply -auto-approve
+
+
+
+
+
+      # - name: Get AWS Root Org ID
+      #   id: get_org_id
+      #   run: |
+      #     ORG_ID=$(aws organizations describe-organization --query 'Organization.Id' --output text)
+      #     echo "Organization ID: $ORG_ID"
+      #     echo "ORG_ID=$ORG_ID" >> $GITHUB_ENV
+
+      # - name: Use the Organization ID
+      #   run: |
+      #     echo "The AWS Organization ID is: $ORG_ID"
+      #   env:
+      #     ORG_ID: ${{ env.ORG_ID }}
