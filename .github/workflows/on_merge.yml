@@ -18,7 +18,7 @@ jobs:
 
       - name: Get Repository URL
         run: |
-          echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"        
+          echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}@${GITHUB_SHA}"        
 
       # - name: Configure AWS Credentials using OIDC
       #   uses: aws-actions/configure-aws-credentials@v4
