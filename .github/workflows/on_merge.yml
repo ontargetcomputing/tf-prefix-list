@@ -47,15 +47,12 @@ jobs:
           echo "SOURCE_CONTROL=$SOURCE_CONTROL" >> $GITHUB_ENV
 
       - name: Terraform Plan
+        working-directory: roots/fsx_whitelist
         run: |
           TF_VAR_management_account_id=$ORG_ID TF_VAR_SourceControl=$SOURCE_CONTROL terraform plan -var-file=./env/5017.tfvars
         env:
           ORG_ID: ${{ env.ORG_ID }}
           SOURCE_CONTROL: ${{ env.SOURCE_CONTROL }}
-
-      - name: Terraform Plan
-        working-directory: roots/fsx_whitelist
-        run: terraform plan
 
       # # - name: Terraform Apply
       # #   if: github.event_name == 'push'
