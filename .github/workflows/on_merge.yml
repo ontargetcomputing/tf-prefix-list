@@ -36,9 +36,9 @@ jobs:
         working-directory: roots/fsx_whitelist
         run: terraform init
 
-      # - name: Terraform Plan
-      #   working-directory: roots/fsx_whitelist
-      #   run: terraform plan
+      - name: Terraform Plan
+        working-directory: roots/fsx_whitelist
+        run: terraform plan
 
       # # - name: Terraform Apply
       # #   if: github.event_name == 'push'
