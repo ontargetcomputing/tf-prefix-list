@@ -35,8 +35,8 @@ jobs:
       - name: Get AWS Root Org ID
         id: get_org_id
         run: |
-          ORG_ID=$(aws organizations describe-organization --query 'Organization.Id' --output text)
-          echo "Organization ID: $ORG_ID"
+          ORG_ID=$(aws organizations describe-organization --query 'Organization.MasterAccountId' --output text)
+          echo "Organization Master Account ID: $ORG_ID"
           echo "ORG_ID=$ORG_ID" >> $GITHUB_ENV
 
       - name: Setup the value for our SourceControl tag
