@@ -1,5 +1,7 @@
 variable "env" {}
 
+variable "SourceControl" {}
+
 variable "AWS_REGION" {
   default = "us-west-2"
 }

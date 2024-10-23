@@ -16,12 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::582983609964:role/github-actions-oidc-role
-          aws-region: us-west-2
-
+      - name: Get Repository URL
+        run: |
+          echo "Repository URL: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"        
 
       # - name: Configure AWS Credentials using OIDC
       #   uses: aws-actions/configure-aws-credentials@v4
@@ -35,11 +32,13 @@ jobs:
       #     terraform_version: 1.9.8
 
       # - name: Terraform Init
+      #   working-directory: roots/fsx_whitelist
       #   run: terraform init
 
       # - name: Terraform Plan
+      #   working-directory: roots/fsx_whitelist
       #   run: terraform plan
 
-      # - name: Terraform Apply
-      #   if: github.event_name == 'push'
-      #   run: terraform apply -auto-approve
+      # # - name: Terraform Apply
+      # #   if: github.event_name == 'push'
+      # #   run: terraform apply -auto-approve

@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.9.5"
+  required_version = ">= 1.9.8"
 
   required_providers {
     aws = {
@@ -7,4 +7,13 @@ terraform {
       version = "= 5.67.0" 
     }
   }
+
+  cloud { 
+    
+    organization = "balutbomber" 
+
+    workspaces { 
+      name = "tf-prefix-list" 
+    } 
+  }   
 }

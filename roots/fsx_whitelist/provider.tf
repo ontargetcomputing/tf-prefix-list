@@ -4,6 +4,7 @@ provider "aws" {
   default_tags {
     tags = {
       "DHCS:Environment" = var.env
+      "DCHS:SourceControl" = var.SourceControl
     }
   }
 }
