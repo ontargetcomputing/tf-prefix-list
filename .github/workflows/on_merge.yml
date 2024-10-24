@@ -66,6 +66,7 @@ jobs:
 
       - name: Terraform Apply if Merge to Main
         if: github.ref == 'refs/heads/main'
+        working-directory: roots/fsx_whitelist
         run: |
           TF_VAR_management_account_id=$ORG_ID TF_VAR_SourceControl=$SOURCE_CONTROL terraform apply -var-file=./env/5017.tfvars -auto-approve
 
