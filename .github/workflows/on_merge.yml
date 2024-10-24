@@ -2,6 +2,16 @@ name: Terraform Plan and Apply On Merge
 
 on:
   workflow_dispatch:
+  # Trigger when a pull request is created or updated 
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+  # Trigger when a merge happens to the main branch, NOTE: should be a merge.  No direct push to main should be allowed
+  push:
+    branches:
+      - main
 
 jobs:
   terraform:
@@ -54,18 +64,8 @@ jobs:
           ORG_ID: ${{ env.ORG_ID }}
           SOURCE_CONTROL: ${{ env.SOURCE_CONTROL }}
 
-      # # - name: Terraform Apply
-      # #   if: github.event_name == 'push'
-      # #   run: terraform apply -auto-approve
+      - name: Terraform Apply if Merge to Main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          TF_VAR_management_account_id=$ORG_ID TF_VAR_SourceControl=$SOURCE_CONTROL terraform plan -var-file=./env/5017.tfvars -auto-approve
 
-
-
-
-
-
-
-      # - name: Use the Organization ID
-      #   run: |
-      #     echo "The AWS Organization ID is: $ORG_ID"
-      #   env:
-      #     ORG_ID: ${{ env.ORG_ID }}
